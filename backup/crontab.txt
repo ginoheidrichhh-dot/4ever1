@@ -1,0 +1,3 @@
+# Tägliches Backup um 03:00 Uhr
+# Einrichten mit: crontab -e
+0 3 * * * cd /opt/fahrschulo && node backup/backup.js >> /var/log/fahrschulo-backup.log 2>&1

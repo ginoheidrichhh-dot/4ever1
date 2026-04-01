@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <title>Mein Fahrschüler-Portal</title>
+  <link rel="stylesheet" href="/portal/css/style.css">
+</head>
+<body>
+
+  <!-- Auth Screen -->
+  <div id="authScreen" class="auth-screen">
+    <div class="auth-card">
+      <h1 class="auth-title">Mein Portal</h1>
+      <p class="auth-subtitle" id="authSubtitle">Fahrschüler-Portal Login</p>
+
+      <!-- Activation (via token) -->
+      <div id="activateForm" style="display:none;">
+        <p style="text-align:center;color:var(--text-secondary);margin-bottom:20px;font-size:14px;">
+          Lege jetzt deine persönliche PIN fest (4-6 Ziffern)
+        </p>
+        <div class="form-group">
+          <label class="form-label">Neue PIN</label>
+          <input type="password" class="form-input" id="activatePin" maxlength="6" placeholder="••••" inputmode="numeric">
+        </div>
+        <div class="form-group">
+          <label class="form-label">PIN bestätigen</label>
+          <input type="password" class="form-input" id="activatePinConfirm" maxlength="6" placeholder="••••" inputmode="numeric">
+        </div>
+        <button class="btn btn-primary" onclick="activate()">Portal aktivieren</button>
+      </div>
+
+      <!-- Login -->
+      <div id="loginForm">
+        <div class="form-group">
+          <label class="form-label">Email</label>
+          <input type="email" class="form-input email-input" id="loginEmail" placeholder="deine@email.de">
+        </div>
+        <div class="form-group">
+          <label class="form-label">PIN</label>
+          <input type="password" class="form-input" id="loginPin" maxlength="6" placeholder="••••" inputmode="numeric">
+        </div>
+        <button class="btn btn-primary" onclick="login()">Anmelden</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Portal -->
+  <div id="portalScreen" style="display:none;">
+    <div class="header">
+      <h1>Mein Fahrschüler-Portal</h1>
+      <div class="header-sub" id="welcomeText"></div>
+      <div class="header-actions">
+        <button class="header-btn" onclick="logout()">Abmelden</button>
+      </div>
+    </div>
+
+    <div class="main">
+      <!-- Stats -->
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-value" id="statLessons">0</div>
+          <div class="stat-label">Fahrstunden</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-value" id="statHours">0</div>
+          <div class="stat-label">Stunden</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-value" id="statRating">-</div>
+          <div class="stat-label">Bewertung</div>
+        </div>
+      </div>
+
+      <!-- Top Errors -->
+      <div class="card" id="topErrorsCard" style="display:none;">
+        <div class="card-title">Häufigste Fehler</div>
+        <div id="topErrors"></div>
+      </div>
+
+      <!-- Lessons -->
+      <div class="card">
+        <div class="card-title">Meine Fahrstunden</div>
+        <div id="lessonList"></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="toast-container" id="toastContainer"></div>
+
+  <script src="/portal/js/app.js"></script>
+</body>
+</html>

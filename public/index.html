@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <title>Fahrschulo - Fahrlehrer App</title>
+  <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+
+  <!-- Auth Screen -->
+  <div id="authScreen" class="auth-screen">
+    <div class="auth-card">
+      <h1 class="auth-title">Fahrschulo</h1>
+      <p class="auth-subtitle" id="authSubtitle">Fahrlehrer Login</p>
+
+      <div id="loginForm">
+        <div class="form-group">
+          <label class="form-label">Email</label>
+          <input type="email" class="form-input" id="loginEmail" placeholder="email@beispiel.de">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Passwort</label>
+          <input type="password" class="form-input" id="loginPassword" placeholder="Passwort">
+        </div>
+        <button class="btn btn-primary btn-block" onclick="login()">Einloggen</button>
+        <p style="text-align:center;margin-top:16px;font-size:13px;color:var(--text-secondary);">
+          Noch kein Konto? <a href="#" onclick="showRegister()" style="color:var(--primary);">Registrieren</a>
+        </p>
+      </div>
+
+      <div id="registerForm" style="display:none;">
+        <div class="form-group">
+          <label class="form-label">Name</label>
+          <input type="text" class="form-input" id="regName" placeholder="Max Mustermann">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Email</label>
+          <input type="email" class="form-input" id="regEmail" placeholder="email@beispiel.de">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Passwort</label>
+          <input type="password" class="form-input" id="regPassword" placeholder="Mind. 6 Zeichen">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Telefon (optional)</label>
+          <input type="tel" class="form-input" id="regPhone" placeholder="+49 ...">
+        </div>
+        <button class="btn btn-primary btn-block" onclick="register()">Registrieren</button>
+        <p style="text-align:center;margin-top:16px;font-size:13px;color:var(--text-secondary);">
+          Schon registriert? <a href="#" onclick="showLogin()" style="color:var(--primary);">Einloggen</a>
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <!-- App -->
+  <div id="appScreen" style="display:none;">
+
+    <!-- Header -->
+    <div class="header">
+      <h1>Fahrschulo</h1>
+      <div class="header-actions">
+        <span id="instructorName" style="font-size:13px;opacity:0.8;"></span>
+        <button class="header-btn" onclick="logout()">Abmelden</button>
+      </div>
+    </div>
+
+    <!-- Navigation -->
+    <nav class="nav-tabs">
+      <button class="nav-tab active" onclick="switchSection('dashboard')">Dashboard</button>
+      <button class="nav-tab" onclick="switchSection('students')">Schüler</button>
+      <button class="nav-tab" onclick="switchSection('lesson')">Fahrstunde</button>
+      <button class="nav-tab" onclick="switchSection('history')">Verlauf</button>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="main">
+
+      <!-- Dashboard -->
+      <div id="sec-dashboard" class="section active">
+        <div class="card">
+          <div class="card-header">
+            <span class="card-title">Heute</span>
+            <span id="todayDate" style="font-size:13px;color:var(--text-secondary);"></span>
+          </div>
+          <div id="todayLessons">
+            <div class="empty-state">
+              <div class="empty-state-icon">📅</div>
+              <div class="empty-state-text">Keine Fahrstunden heute</div>
+            </div>
+          </div>
+        </div>
+        <div class="card">
+          <div class="card-title" style="margin-bottom:12px;">Schnellstart</div>
+          <button class="btn btn-primary btn-block" onclick="switchSection('lesson')" style="margin-bottom:8px;">
+            Neue Fahrstunde starten
+          </button>
+          <button class="btn btn-outline btn-block" onclick="switchSection('students')">
+            Schüler verwalten
+          </button>
+        </div>
+        <div class="card">
+          <div class="card-title" style="margin-bottom:12px;">Statistik</div>
+          <div id="dashStats" style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
+            <div style="text-align:center;padding:12px;background:var(--bg);border-radius:10px;">
+              <div id="statStudents" style="font-size:24px;font-weight:700;color:var(--primary);">0</div>
+              <div style="font-size:12px;color:var(--text-secondary);">Schüler</div>
+            </div>
+            <div style="text-align:center;padding:12px;background:var(--bg);border-radius:10px;">
+              <div id="statLessons" style="font-size:24px;font-weight:700;color:var(--success);">0</div>
+              <div style="font-size:12px;color:var(--text-secondary);">Fahrstunden</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Schüler -->
+      <div id="sec-students" class="section">
+        <div class="card-header" style="margin-bottom:12px;">
+          <span class="card-title">Meine Schüler</span>
+          <button class="btn btn-primary btn-sm" onclick="openAddStudent()">+ Neu</button>
+        </div>
+        <div id="studentList"></div>
+      </div>
+
+      <!-- Fahrstunde (BVF System) -->
+      <div id="sec-lesson" class="section">
+        <!-- Schüler wählen -->
+        <div id="lessonSetup" class="card">
+          <div class="card-title" style="margin-bottom:16px;">Neue Fahrstunde</div>
+          <div class="form-group">
+            <label class="form-label">Schüler</label>
+            <select class="form-select" id="lessonStudent"></select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Fahrstunden-Typ</label>
+            <select class="form-select" id="lessonType">
+              <option value="normal">Normal</option>
+              <option value="ueberlandfahrt">Überlandfahrt</option>
+              <option value="autobahnfahrt">Autobahnfahrt</option>
+              <option value="nachtfahrt">Nachtfahrt</option>
+              <option value="pruefung">Prüfungssimulation</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Dauer (Minuten)</label>
+            <select class="form-select" id="lessonDuration">
+              <option value="45">45 min</option>
+              <option value="90">90 min (Doppelstunde)</option>
+              <option value="135">135 min</option>
+            </select>
+          </div>
+          <button class="btn btn-success btn-block" onclick="startLesson()">Fahrstunde starten</button>
+        </div>
+
+        <!-- Aktive Fahrstunde mit BVF Tabs -->
+        <div id="activeLesson" style="display:none;">
+          <div class="card" style="padding:12px 16px;">
+            <div style="display:flex;justify-content:space-between;align-items:center;">
+              <div>
+                <strong id="activeLessonStudent"></strong>
+                <div style="font-size:12px;color:var(--text-secondary);" id="activeLessonInfo"></div>
+              </div>
+              <div style="display:flex;gap:8px;">
+                <button class="btn btn-warning btn-sm" onclick="syncLesson()">Sync</button>
+                <button class="btn btn-danger btn-sm" onclick="endLesson()">Beenden</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- BVF 4-Tab System -->
+          <div class="bvf-tabs">
+            <button class="bvf-tab active" onclick="switchBvfTab('fehler')">Fehler</button>
+            <button class="bvf-tab" onclick="switchBvfTab('grundfahraufgaben')">Grund</button>
+            <button class="bvf-tab" onclick="switchBvfTab('verkehr')">Verkehr</button>
+            <button class="bvf-tab" onclick="switchBvfTab('bewertung')">Bewertung</button>
+          </div>
+
+          <!-- Tab: Fehler (28 Buttons) -->
+          <div id="bvf-fehler" class="bvf-content active">
+            <div class="card">
+              <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px;">
+                <span class="card-title">Fehler erfassen</span>
+                <span id="totalErrorCount" style="font-size:13px;color:var(--danger);font-weight:600;">0 Fehler</span>
+              </div>
+              <div id="errorGrid" class="error-grid"></div>
+            </div>
+          </div>
+
+          <!-- Tab: Grundfahraufgaben -->
+          <div id="bvf-grundfahraufgaben" class="bvf-content">
+            <div class="card">
+              <div class="card-title" style="margin-bottom:16px;">Grundfahraufgaben</div>
+              <div id="grundChecklist"></div>
+            </div>
+          </div>
+
+          <!-- Tab: Verkehr -->
+          <div id="bvf-verkehr" class="bvf-content">
+            <div class="card">
+              <div class="card-title" style="margin-bottom:16px;">Verkehrsverhalten</div>
+              <div id="verkehrChecklist"></div>
+            </div>
+          </div>
+
+          <!-- Tab: Bewertung -->
+          <div id="bvf-bewertung" class="bvf-content">
+            <div class="card">
+              <div class="card-title" style="margin-bottom:16px;">Gesamtbewertung</div>
+              <div class="form-group">
+                <label class="form-label">Bewertung</label>
+                <div class="rating" id="lessonRating"></div>
+              </div>
+              <div class="form-group">
+                <label class="form-label">Notizen</label>
+                <textarea class="form-textarea" id="lessonNotes" placeholder="Notizen zur Fahrstunde..."></textarea>
+              </div>
+              <div id="lessonErrorSummary" style="margin-top:16px;"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Verlauf -->
+      <div id="sec-history" class="section">
+        <div class="card-header" style="margin-bottom:12px;">
+          <span class="card-title">Fahrstunden-Verlauf</span>
+        </div>
+        <div id="historyList"></div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Modal -->
+  <div class="modal-overlay" id="modalOverlay" onclick="closeModal(event)">
+    <div class="modal">
+      <div class="modal-handle"></div>
+      <div id="modalContent"></div>
+    </div>
+  </div>
+
+  <!-- Toast Container -->
+  <div class="toast-container" id="toastContainer"></div>
+
+  <script src="/js/app.js"></script>
+</body>
+</html>

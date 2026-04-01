@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body style="margin:0;padding:0;background:#f4f6f8;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;">
+  <table width="100%" cellpadding="0" cellspacing="0" style="background:#f4f6f8;padding:40px 20px;">
+    <tr>
+      <td align="center">
+        <table width="600" cellpadding="0" cellspacing="0" style="background:#ffffff;border-radius:16px;overflow:hidden;box-shadow:0 4px 24px rgba(0,0,0,0.08);">
+
+          <!-- Header -->
+          <tr>
+            <td style="background:linear-gradient(135deg,#1a73e8,#4285f4);padding:40px 40px 30px;text-align:center;">
+              <h1 style="margin:0;color:#ffffff;font-size:28px;font-weight:700;">Fahrschulo</h1>
+              <p style="margin:8px 0 0;color:rgba(255,255,255,0.9);font-size:14px;">Dein Fahrschüler-Portal</p>
+            </td>
+          </tr>
+
+          <!-- Content -->
+          <tr>
+            <td style="padding:40px;">
+              <h2 style="margin:0 0 8px;color:#1a1a1a;font-size:22px;">Hallo {{STUDENT_NAME}}!</h2>
+              <p style="margin:0 0 24px;color:#666;font-size:16px;line-height:1.6;">
+                <strong>{{INSTRUCTOR_NAME}}</strong> hat dich zum Fahrschüler-Portal eingeladen.
+                Hier kannst du deine Fahrstunden, Fortschritte und Bewertungen einsehen.
+              </p>
+
+              <!-- CTA Button -->
+              <table width="100%" cellpadding="0" cellspacing="0">
+                <tr>
+                  <td align="center" style="padding:16px 0 32px;">
+                    <a href="{{ACTIVATION_LINK}}"
+                       style="display:inline-block;background:#1a73e8;color:#ffffff;text-decoration:none;padding:16px 48px;border-radius:12px;font-size:16px;font-weight:600;box-shadow:0 4px 16px rgba(26,115,232,0.3);">
+                      Portal aktivieren
+                    </a>
+                  </td>
+                </tr>
+              </table>
+
+              <!-- Info -->
+              <div style="background:#f8f9fa;border-radius:12px;padding:20px;margin-bottom:24px;">
+                <p style="margin:0 0 8px;color:#1a1a1a;font-weight:600;font-size:14px;">So geht's:</p>
+                <ol style="margin:0;padding:0 0 0 20px;color:#666;font-size:14px;line-height:2;">
+                  <li>Klicke auf "Portal aktivieren"</li>
+                  <li>Lege eine 4-6 stellige PIN fest</li>
+                  <li>Melde dich mit deiner Email + PIN an</li>
+                </ol>
+              </div>
+
+              <p style="margin:0;color:#999;font-size:13px;line-height:1.5;">
+                Falls der Button nicht funktioniert, kopiere diesen Link:<br>
+                <a href="{{ACTIVATION_LINK}}" style="color:#1a73e8;word-break:break-all;">{{ACTIVATION_LINK}}</a>
+              </p>
+            </td>
+          </tr>
+
+          <!-- Footer -->
+          <tr>
+            <td style="background:#f8f9fa;padding:24px 40px;text-align:center;border-top:1px solid #eee;">
+              <p style="margin:0;color:#999;font-size:12px;">
+                Viel Erfolg bei deiner Fahrausbildung!<br>
+                &copy; Fahrschulo - {{PORTAL_URL}}
+              </p>
+            </td>
+          </tr>
+
+        </table>
+      </td>
+    </tr>
+  </table>
+</body>
+</html>
